@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -31,18 +32,48 @@ namespace cloud.native.tests
         [Test]
         public async Task post_and_get()
         {
-            var sampleData = CreateSample();
-            await PostData(sampleData);
-            var readData = await GetData(sampleData.Id);
+            var postData = CreateSample();
+            await PostData(postData);
+            var getData = await GetData(postData.Id);
 
-            Assert.That(readData.Id, Is.EqualTo(sampleData.Id));
+            AssertGetDataIsSameAsPostData(getData, postData);
+        }
+
+        private void AssertGetDataIsSameAsPostData(ContactDto getData, ContactDto postData)
+        {
+            Assert.That(getData.Id, Is.EqualTo(postData.Id), "Incorrect Id");
+            Assert.That(getData.Name, Is.EqualTo(postData.Name), "Incorrect Name");
+
+            Assert.That(
+                getData.Communications.Select(x => x.Address).ToArray(),
+                Is.EqualTo(postData.Communications.Select(x => x.Address).ToArray()),
+                "Incorrect Communications.Addresses");
+
+            Assert.That(
+                getData.Communications.Select(x => x.Method).ToArray(),
+                Is.EqualTo(postData.Communications.Select(x => x.Method).ToArray()),
+                "Incorrect Communications.Methods");
         }
 
         private ContactDto CreateSample()
         {
             return new ContactDto
             {
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                Name = "Bob Jones",
+                Communications = new[]
+                {
+                   new CommunicationDto
+                   {
+                       Method = "email",
+                       Address = "bob-jones@internet.com"
+                   },
+                   new CommunicationDto
+                   {
+                       Method = "post",
+                       Address = "10 Meadow Cottages, Little Kingshill, Bucks"
+                   }
+                }
             };
         }
 
