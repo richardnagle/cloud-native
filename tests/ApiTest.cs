@@ -22,6 +22,12 @@ namespace cloud.native.tests
             _apiClient.Dispose();
         }
 
+        [SetUp]
+        public async Task SetUp()
+        {
+            await _apiClient.ClearData();
+        }
+
         [Test]
         public async Task post_and_get_single()
         {
@@ -42,6 +48,8 @@ namespace cloud.native.tests
             await _apiClient.PostData(postData2);
 
             var getData = await _apiClient.GetData();
+
+            Assert.That(getData.Length, Is.EqualTo(2), "GET returned unexpected number of contacts");
 
             AssertGetDataIsSameAsPostData(getData[0], postData1);
             AssertGetDataIsSameAsPostData(getData[1], postData2);

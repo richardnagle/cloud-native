@@ -40,6 +40,13 @@ namespace cloud.native.tests
             return await Get<ContactDto[]>("api/contact");
         }
 
+        public async Task ClearData()
+        {
+            var resp = await _api.DeleteAsync("api/contact");
+
+            Assert.That(resp.StatusCode, Is.EqualTo(HttpStatusCode.OK), "Incorrect status code on DELETE");
+        }
+
         private async Task<T> Get<T>(string resource)
         {
             var resp = await _api.GetAsync(resource);
