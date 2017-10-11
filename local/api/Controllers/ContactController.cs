@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using cloud.native.contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,24 +10,21 @@ namespace cloud.native.local.api.Controllers
     [Route("api/[controller]")]
     public class ContactController : Controller
     {
-        private static ContactDto _contactDto;
+        private static readonly IDictionary<Guid, ContactDto> _contactDtos = new ConcurrentDictionary<Guid, ContactDto>();
 
-        //// GET api/values
-        //[HttpGet]
-        //public IEnumerable<ContactDto> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        [HttpGet]
+        public ContactDto[] Get()
+        {
+            return _contactDtos.Values.ToArray();
+        }
 
-        // GET api/values/5
         [HttpGet("{id}")]
-        public ContactDto Get(Guid id) => _contactDto;
+        public ContactDto Get(Guid id) => _contactDtos[id];
 
-        // POST api/values
         [HttpPost]
         public StatusCodeResult Post([FromBody]ContactDto value)
         {
-            _contactDto = value;
+            _contactDtos.Add(value.Id, value);
             return StatusCode(201);
         }
     }
