@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cloud.native.local.api", "l
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E7B41958-C315-4E61-AADB-479B58B5F3AC}"
 	ProjectSection(SolutionItems) = preProject
-		publish-local.ps1 = publish-local.ps1
+		run-tests.ps1 = run-tests.ps1
 	EndProjectSection
 EndProject
 Global
