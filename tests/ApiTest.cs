@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using cloud.native.contracts;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace cloud.native.tests
@@ -13,30 +9,42 @@ namespace cloud.native.tests
     [TestFixture("http://localhost:9999", TestName="Local")]
     public class ApiTest
     {
-        private readonly HttpClient _api;
+        private readonly ApiClient _apiClient;
 
         public ApiTest(string hostUrl)
         {
-            _api = new HttpClient
-            {
-                BaseAddress = new Uri(hostUrl)
-            };
+            _apiClient = new ApiClient(hostUrl);
         }
 
         [OneTimeTearDown]
         public void CleanUp()
         {
-            _api?.Dispose();
+            _apiClient.Dispose();
         }
 
         [Test]
-        public async Task post_and_get()
+        public async Task post_and_get_single()
         {
-            var postData = CreateSample();
-            await PostData(postData);
-            var getData = await GetData(postData.Id);
+            var postData = CreateSample1();
+            await _apiClient.PostData(postData);
+            var getData = await _apiClient.GetData(postData.Id);
 
             AssertGetDataIsSameAsPostData(getData, postData);
+        }
+
+        [Test]
+        public async Task post_and_get_multiple()
+        {
+            var postData1 = CreateSample1();
+            await _apiClient.PostData(postData1);
+
+            var postData2 = CreateSample2();
+            await _apiClient.PostData(postData2);
+
+            var getData = await _apiClient.GetData();
+
+            AssertGetDataIsSameAsPostData(getData[0], postData1);
+            AssertGetDataIsSameAsPostData(getData[1], postData2);
         }
 
         private void AssertGetDataIsSameAsPostData(ContactDto getData, ContactDto postData)
@@ -55,7 +63,7 @@ namespace cloud.native.tests
                 "Incorrect Communications.Methods");
         }
 
-        private ContactDto CreateSample()
+        private ContactDto CreateSample1()
         {
             return new ContactDto
             {
@@ -77,24 +85,31 @@ namespace cloud.native.tests
             };
         }
 
-        private async Task PostData(ContactDto dto)
+        private ContactDto CreateSample2()
         {
-            HttpContent content = new StringContent(JsonConvert.SerializeObject(dto) , Encoding.UTF8, "application/json");
-
-            var resp = await _api.PostAsync("api/contact", content);
-
-            Assert.That(resp.StatusCode, Is.EqualTo(HttpStatusCode.Created), "Incorrect status code on POST");
-        }
-
-        private async Task<ContactDto> GetData(Guid id)
-        {
-            var resp = await _api.GetAsync($"api/contact/{id}");
-
-            Assert.That(resp.StatusCode, Is.EqualTo(HttpStatusCode.OK), "Incorrect status code on GET");
-
-            var jsonContent = await resp.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<ContactDto>(jsonContent);
+            return new ContactDto
+            {
+                Id = Guid.NewGuid(),
+                Name = "Caroline Smith",
+                Communications = new[]
+                {
+                   new CommunicationDto
+                   {
+                       Method = "email",
+                       Address = "csmith@sky.com"
+                   },
+                   new CommunicationDto
+                   {
+                       Method = "home-phone",
+                       Address = "0203 353 35354412"
+                   },
+                   new CommunicationDto
+                   {
+                       Method = "mobile-phone",
+                       Address = "07777 545 454"
+                   }
+                }
+            };
         }
     }
 }
