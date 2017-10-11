@@ -57,7 +57,13 @@ namespace cloud.native.tests
 
         private async Task<ContactDto> GetData(Guid id)
         {
-            return new ContactDto();
+            var resp = await _api.GetAsync($"api/contact/{id}");
+
+            Assert.That(resp.StatusCode, Is.EqualTo(HttpStatusCode.OK), "Incorrect status code on GET");
+
+            var jsonContent = await resp.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<ContactDto>(jsonContent);
         }
     }
 }
