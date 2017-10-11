@@ -6,6 +6,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cloud.native.tests", "tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cloud.native.contracts", "contracts\cloud.native.contracts.csproj", "{D5B24459-FD9E-4DA4-A171-685747B07883}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local", "local", "{269128BB-BAA9-48F0-AA7E-E4055E112D50}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cloud.native.local.api", "local\api\cloud.native.local.api.csproj", "{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E7B41958-C315-4E61-AADB-479B58B5F3AC}"
+	ProjectSection(SolutionItems) = preProject
+		publish-local.ps1 = publish-local.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,9 +49,24 @@ Global
 		{D5B24459-FD9E-4DA4-A171-685747B07883}.Release|x64.Build.0 = Release|Any CPU
 		{D5B24459-FD9E-4DA4-A171-685747B07883}.Release|x86.ActiveCfg = Release|Any CPU
 		{D5B24459-FD9E-4DA4-A171-685747B07883}.Release|x86.Build.0 = Release|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Debug|x64.Build.0 = Debug|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Debug|x86.Build.0 = Debug|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Release|x64.ActiveCfg = Release|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Release|x64.Build.0 = Release|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Release|x86.ActiveCfg = Release|Any CPU
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EAE7F7C3-9327-4D13-A6AE-D128DE8A5425} = {269128BB-BAA9-48F0-AA7E-E4055E112D50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F25396A0-BA84-45AE-809D-86CDB1FF4545}
