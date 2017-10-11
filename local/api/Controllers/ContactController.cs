@@ -27,5 +27,11 @@ namespace cloud.native.local.api.Controllers
             _contactDtos.Add(value.Id, value);
             return StatusCode(201);
         }
+
+        [HttpDelete]
+        public void Delete()
+        {
+            _contactDtos.Clear();
+        }
     }
 }
