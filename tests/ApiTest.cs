@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace cloud.native.tests
 {
-    [TestFixture("http://localhost:6666", TestName="Local")]
+    [TestFixture("http://localhost:9999", TestName="Local")]
     public class ApiTest
     {
         private readonly HttpClient _api;
