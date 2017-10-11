@@ -10,21 +10,21 @@ namespace cloud.native.local.api.Controllers
     [Route("api/[controller]")]
     public class ContactController : Controller
     {
-        private static readonly IDictionary<Guid, ContactDto> _contactDtos = new ConcurrentDictionary<Guid, ContactDto>();
+        private static readonly IList<ContactDto> _contactDtos = new List<ContactDto>();
 
         [HttpGet]
         public ContactDto[] Get()
         {
-            return _contactDtos.Values.ToArray();
+            return _contactDtos.ToArray();
         }
 
         [HttpGet("{id}")]
-        public ContactDto Get(Guid id) => _contactDtos[id];
+        public ContactDto Get(Guid id) => _contactDtos.SingleOrDefault(dto => dto.Id == id);
 
         [HttpPost]
         public StatusCodeResult Post([FromBody]ContactDto value)
         {
-            _contactDtos.Add(value.Id, value);
+            _contactDtos.Add(value);
             return StatusCode(201);
         }
 
